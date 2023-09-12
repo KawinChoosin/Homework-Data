@@ -1,0 +1,551 @@
+public class Tree extends BTreePrinter{ 
+    Node root;
+      
+    public Tree(Node root){
+        this.root=root;
+    }
+    
+    public void printTree(){
+        super.printTree(root);
+        if(root == null){
+        System.out.println("Empty tree!!!");
+        }
+    }
+
+    public Node find(int search_key){
+        return find(root, search_key); 
+    }
+    
+    public static Node find(Node node, int search_key){
+        if (node == null) {
+            return null; 
+        }
+        if (search_key == node.key) {
+            return node; 
+        } else if (search_key < node.key) {
+            return find(node.left, search_key);
+        } else {
+            return find(node.right, search_key);
+        }
+   
+    }
+        //การค้นหาค่าในtreeโดยใช้recursive เเล้วreturn node ที่ต้องการออกมา
+        
+    
+    
+    public Node findMin(){
+        return findMin(root); // Call the recursive version
+    }
+    
+    public static Node findMin(Node node){
+        if (node == null) {
+            return null; 
+        }
+        if(node!=null){
+            return findMin(node.left);   
+        }
+        return node;
+    }
+    //การค้นหาค่าที่มีค่าน้อยที่สุดในtreeโดยใช้recursive เเล้วreturn node ที่ต้องการออกมา
+    
+    public Node findMax(){
+        return findMax(root); // Call the recursive version
+    }
+    
+    public static Node findMax(Node node){
+        // this function should be recursive
+        if (node == null) {
+        return null; 
+        }
+        if(node!=null){
+            return findMax(node.right);
+        }
+        return node;
+    }
+    //การค้นหาค่าที่มากที่สุดในtreeโดยใช้recursive เเล้วreturn node ที่ต้องการออกมา
+    
+    
+    public Node findClosestLeaf(int search_key){
+        return findClosestLeaf(root, search_key); 
+    }
+    public static Node findClosestLeaf(Node node, int search_key){
+        if(node==null){
+            return null;
+        }else if(search_key<node.key){
+            if(node.left!=null){
+            return findClosestLeaf(node.left,search_key);
+            }
+            return node;
+        }else if(search_key>node.key){
+            if(node.right!=null){
+            return findClosestLeaf(node.right,search_key);
+            }
+            return node;
+        }else{
+            return node;
+        }
+        
+    //เป็นการหาnodeอยู่ใกล้กับsearch_keyโดยจะcheck search_keyเทียบกับเเต่ละnodeเเต่ละตัวโดยใช้recursive
+    }
+    
+    public Node findClosest(int search_key){
+        Node current, closest;
+        closest = current = root;
+        int min_diff = Integer.MAX_VALUE;
+        while (current != null) {
+        if (Math.abs(current.key - search_key) < min_diff) {
+            min_diff = Math.abs(current.key - search_key);
+            closest = current;
+        }
+        if (search_key < current.key) {
+            current = current.left;
+        } else if (search_key > current.key) {
+            current = current.right;
+        } else {
+            break; 
+        }
+    }//เป็นหาnodeที่มีค่าใกล้เคียงกับsearch_keyที่สุดโดยจะcheckค่าผลต่างสัมบูรณ์หากค่านั้นน้อยกว่าmin_diff
+     //จะเปลี่ยนmin_diffเป็นค่านั้นเเล้วset node closestเป็นnode current เพื่อเก็บค่าnodeที่ใกล้ที่สุดในตอนนั้น
+     //จากนั้นrecursiveเพื่อหาค่าclosestต่อไป
+    return closest;
+}
+
+    
+    
+    // Print node's key
+    public static void printNode(Node node){
+       
+        if(node==null){
+            System.out.println("Node not found!!!");
+        }else{
+            System.out.println(node.key);
+        } 
+    }
+    
+    public Tree(){} // Dummy constructor (No need to edit)
+}
+
+
+
+
+
+
+
+
+
+public class Tree extends BTreePrinter{ // Fix this
+    Node root;
+      
+    public Tree(Node root){
+        this.root=root;
+    }
+    
+    public void printTree(){
+        super.printTree(root);
+        if(root == null){
+            System.out.println("Empty tree!!!");
+        }
+    }
+
+    public static void printNode(Node node){
+        if(node==null){
+            System.out.println("Node not found!!!");
+        }else{
+            System.out.println(node.key);
+        } 
+    }
+    
+
+    public static Node findClosestLeaf(Node node, int search_key){
+        if(node==null){
+            return null;
+        }else if(search_key<node.key){
+            if(node.left!=null){
+            return findClosestLeaf(node.left,search_key);
+            }
+            return node;
+        }else if(search_key>node.key){
+            if(node.right!=null){
+            return findClosestLeaf(node.right,search_key);
+            }
+            return node;
+        }else{
+            return node;
+        }
+        
+    }
+
+    public void insert(int key) {
+        Node value = new Node(key); 
+        Node closest=Tree.findClosestLeaf(root,key);
+        if(root==null){
+            root=value;
+        }else if(closest.key==key){
+            System.out.println("Duplicated key!!!");
+        }else if(key<closest.key){
+            closest.left=value;
+        }else{
+            closest.right=value;
+        }
+    }
+    //เป็นfunction ที่เอาไว้เพิ่มค่า เพิ่มnodeในtreeโดยจะเพิ่มแบบbinary search tree
+    
+    public void printPreOrderDFT(){
+        System.out.print("PreOrder DFT node sequence [ ");
+        printPreOrderDFT(root);
+        System.out.println("]");
+    }
+    
+    public static void printPreOrderDFT(Node node){
+        if(node==null){
+            return;
+        }else{
+        System.out.print(node.key+" ");
+        printPreOrderDFT(node.left);
+        printPreOrderDFT(node.right);
+        }
+    }
+    
+    
+    public void printInOrderDFT(){
+        System.out.print("InOrder DFT node sequence [ ");
+        printInOrderDFT(root);
+        System.out.println("]");
+    }
+    
+    public static void printInOrderDFT(Node node){
+        if(node==null){
+            return;
+        }else{
+        printInOrderDFT(node.left);
+        System.out.print(node.key+" ");
+        printInOrderDFT(node.right);
+        }
+    }
+    
+    public void printPostOrderDFT(){
+        System.out.print("PostOrder DFT node sequence [ ");
+        printPostOrderDFT(root);
+        System.out.println("]");
+    }
+    
+    public static void printPostOrderDFT(Node node){
+        if(node==null){
+            return;
+        }else{
+        printPostOrderDFT(node.left);
+        printPostOrderDFT(node.right);
+        System.out.print(node.key+" ");
+        }
+    }
+    
+    public Tree(){} // Dummy constructor (No need to edit)
+}
+
+
+
+
+
+public class Tree extends BTreePrinter{ // Fix this
+    Node root;
+      
+    public Tree(Node root){
+        this.root=root;
+    }
+    
+    public void printTree(){
+        super.printTree(root);
+    if(root == null){
+    System.out.println("Empty tree!!!");
+    }
+    }
+
+    public static void printNode(Node node){
+        if(node==null){
+            System.out.println("Node not found!!!");
+        }else{         
+            System.out.println(node.key);
+        } 
+    }
+    
+    public Node find(int search_key){
+         return find(root,search_key);
+    }
+    
+    public static Node find(Node node, int search_key){
+        if (node == null) {
+            return null; 
+        }
+        if (search_key == node.key) {
+            return node; 
+        } else if (search_key < node.key) {
+            return find(node.left, search_key);
+        } else {
+            return find(node.right, search_key);
+        }
+    }
+
+    public static int height(Node node){
+        if(node==null){
+            return -1;
+        }else{
+            return 1+Math.max(height(node.left),height(node.right));
+        }
+    }
+    //หาความสูงของtree
+    
+    public static int size(Node node){
+        if(node==null){
+            return 0;
+        }else{
+            return 1+size(node.left)+size(node.right);
+        }
+    }
+    //หาขนาดของtree
+    
+    public static int depth(Node root, Node node){
+        if(node==null){
+            return -1;
+        }else{
+            return 1+depth(root,node.parent);
+        }
+    }
+    //หาความลึกของtree
+    
+    public int height(){ 
+        return height(root);
+    }
+    
+    public int size(){ 
+        return size(root);
+    }
+    
+    public int depth(){ 
+        return height(root);
+    } //กรณีนี้เนื่องจากความสูงของtreeมีค่าเท่ากับความลึกของtree
+    
+    public Node findKthSmallest(int k){
+        return findKthSmallest(root,k); 
+    }
+    
+    public static Node findKthSmallest(Node node, int k){
+        if(node==null){
+            return null;
+        }else if(k==size(node.left)+1){
+            return node;
+        }else if(k<size(node.left)+1){
+            return findKthSmallest(node.left,k);
+        }else {
+            return findKthSmallest(node.right,k-size(node.left)-1);
+        }
+    }//หาค่าที่ลำดับkในtreeโดยใช้sizeเช็ตขนาดไปเรื่อยๆเพื่อเเบ่งครึ่งข้อมูลเรื่อยๆเเล้วใช้recursive
+    
+    public Tree(){} // Dummy constructor (No need to edit)
+}
+
+
+
+
+
+
+public class Tree extends BTreePrinter{ // Fix this
+    Node root;
+      
+    public Tree(Node root){
+         this.root=root;
+    }
+    
+    public void printTree(){
+        super.printTree(root);
+        if(root == null){
+            System.out.println("Empty tree!!!");
+        }
+    }
+
+    public Node findClosest(int search_key){
+        Node current, closest;
+        closest = current = root;
+        int min_diff = Integer.MAX_VALUE;
+        while (current != null) {
+        if (Math.abs(current.key - search_key) < min_diff) {
+            min_diff = Math.abs(current.key - search_key);
+            closest = current;
+        }
+
+        if (search_key < current.key) {
+            current = current.left;
+        } else if (search_key > current.key) {
+            current = current.right;
+        } else {
+            break; 
+        }
+    }
+
+    return closest;
+}
+    
+    
+    public static Node findNext(Node node){
+        
+        if(node.right !=null){
+            return leftDescendant(node.right);
+        }
+            return rightAncestor(node);
+    }
+    //หาค่าถัดไปของnodeนั้นในbinary search tree
+    
+    public static Node leftDescendant(Node node){// Case 1 (findMin)
+        if(node==null){
+            return null;
+        }
+        if(node.left==null){
+            return node;
+        }else{
+            return leftDescendant(node.left);
+        }
+    }
+    //หาค่าnodeในleft subtree ที่น้อยที่สุด
+    
+    public static Node rightAncestor(Node node) {// Case 1 (first right parent)
+        if(node==null || node.parent==null){
+            return null;
+        }
+        if(node.key<node.parent.key){
+            return node.parent;
+        }else{
+            return rightAncestor(node.parent);
+        }
+    }
+    //หาค่าparentของค่าที่มากที่สุดในleft subtree
+    
+    public List rangeSearch(int x, int y){
+        List L = new List(100);
+        Node N =findClosest(x);
+        while(N!= null){
+            if(N.key >= x && N.key<=y){
+                L.append(N);
+            }
+            if(N.key > y){
+                break;
+            }
+            N=findNext(N);
+        }
+        
+        return L;
+    }
+    //หาค่าที่อยู่ระหว่างx y 
+    
+    
+    public Tree(){} // Dummy constructor (No need to edit)
+}
+
+
+
+
+public class Tree extends BTreePrinter{ // Fix this
+    Node root;
+    
+    public Tree(Node root){
+        this.root = root;
+    }
+    
+    public Tree(){} // Dummy constructor (No need to edit)
+
+    
+    public void printTree(){
+        // Pls use codes from the previous problem
+        super.printTree(root);
+        if(root == null){
+        System.out.println("Empty tree!!!");
+        }
+    }
+
+    public Node find(int search_key){
+        // Pls use codes from the previous problem
+        return find(root,search_key);
+    }
+    
+    public static Node find(Node node, int search_key){
+        // Pls use codes from the previous problem
+        if(node == null || node.key == search_key){
+            return node;
+        }
+        if(node.key < search_key){
+            return find(node.right,search_key);
+        }
+        return find(node.left,search_key);
+    }
+
+    public static Node findMin(Node node){
+        // Pls use codes from the previous problem
+        if(node == null){
+            return null;
+        }
+        if(node.left == null){
+            return node;
+        }
+        return findMin(node.left);
+    }
+    
+    
+    // This function is for deleting the root node
+    // If the node is not the root, please call the recursive version
+    public void delete(int key) {
+        // There should be 6 cases here
+        // Non-root nodes should be forwarded to the static function
+        Node f = find(key);
+        if(root == null){ //Case 1: Empty tree
+            System.out.println("Empty Tree!!!");
+        }else if(root.key == key){ //Delete Root node
+            if(root.left == null && root.right == null){ //Case 2: Root without child
+                root = null;
+            }else if(root.left != null && root.right == null){ //Case 3: Root wiht a single left-child
+                root = root.left;
+            }else if(root.left == null && root.right != null){ //Case 4: Root wiht a single right-child
+                root = root.right;
+            }else if(root.left != null && root.right != null){ //Case 5: Full Root
+                Node fm = findMin(root.right);
+                root.key = fm.key;
+                delete(fm);
+            }
+        }else if(f != null){ //Delete Non-root node
+            delete(f);
+        }else{ //Case 6: Key not found
+            System.out.println("Key not found!!!");
+        }
+    }
+    
+    // Use this function to delete non-root nodes
+    public static void delete(Node node){
+        // There should be 7 cases here
+        if(node.left == null && node.right == null){ //Case 7-8: Node without a child
+            if(node.parent.left == node){ //parent on the left
+                node.parent.left = null;
+            }else{ //parent on the right
+                node.parent.right = null;
+            }
+        }else if(node.left != null && node.right == null){ //Case 9-10: Node with a left child
+            if(node.parent.left == node){ //parent on the right
+                node.parent.left = node.left;
+                node.left.parent = node.parent;
+            }else{ //parent on the left
+                node.parent.right = node.left;
+                node.left.parent = node.parent;
+            }
+        }else if(node.left == null && node.right != null){ //Case 11-12: Node with a right child
+            if(node.parent.left == node){ //parent on the right
+                node.parent.left = node.right;
+                node.right.parent = node.parent;
+            }else{ //parent on the left
+                node.parent.right = node.right;
+                node.right.parent = node.parent;
+            }
+        }else{ //Case 13: Full Node
+            Node fm = findMin(node.right);
+            node.key = fm.key;
+            delete(fm); 
+        }
+        
+    }
+    
+}
