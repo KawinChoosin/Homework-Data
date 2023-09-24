@@ -1,5 +1,3 @@
-package hw5;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,7 +6,10 @@ public class BTreePrinter {
     
     protected void printTree(Node node) {
         int maxLevel = maxLevel(node);
-
+        if (maxLevel>6){
+            System.out.println("The tree is too deep to be printed!!!");
+            return;
+        }
         printNodeInternal(Collections.singletonList(node), 1, maxLevel);
     }
 
@@ -24,11 +25,11 @@ public class BTreePrinter {
         printWhitespaces(firstSpaces);
 
         List<Node> newNodes = new ArrayList<>();
-        for (Node node : nodes) {
-            if (node != null) {
-                System.out.print(node.data);
-                newNodes.add(node.left);
-                newNodes.add(node.right);
+        for (Node tree : nodes) {
+            if (tree != null) {
+                System.out.print(tree.key);
+                newNodes.add(tree.left);
+                newNodes.add(tree.right);
             } else {
                 newNodes.add(null);
                 newNodes.add(null);
@@ -73,11 +74,11 @@ public class BTreePrinter {
             System.out.print(" ");
     }
 
-    private int maxLevel(Node node) {
-        if (node == null)
+    private int maxLevel(Node tree) {
+        if (tree == null)
             return 0;
 
-        return Math.max(maxLevel(node.left), maxLevel(node.right)) + 1;
+        return Math.max(maxLevel(tree.left), maxLevel(tree.right)) + 1;
     }
 
     private boolean isAllElementsNull(List list) {
